@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>欢迎来到 GPS 追踪</title>
+</head>
+<body>
+  <h1>GPS 追踪首页</h1>
+  <p>
+    欢迎使用 Lulutech GPS 追踪系统。点击下方按钮开始授权获取您的位置，完成后会自动跳转到地图页面，您即可查看自己的实时位置。
+  </p>
+  <button id="startBtn">开始授权定位</button>
+
+  <script>
+    // 给按钮绑定点击事件，跳转到 reporter.html
+    const startBtn = document.getElementById('startBtn');
+    startBtn.addEventListener('click', () => {
+      window.location.href = "reporter.html";
+    });
+  </script>
+</body>
+</html>
