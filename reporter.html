@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>位置上报</title>
+</head>
+<body>
+  <h1>位置上报页面</h1>
+  <p>请确保授权浏览器获取您的位置。</p>
+
+  <script type="module">
+    // 1. 导入所需的 Firebase 功能
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
+
+    // 2. 你的 Firebase 配置
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5fHJfmU2BnD9mvKDPzvlycQD_lRx03K8",
+      authDomain: "gpslulutech.firebaseapp.com",
+      databaseURL: "https://gpslulutech-default-rtdb.firebaseio.com",
+      projectId: "gpslulutech",
+      storageBucket: "gpslulutech.firebasestorage.app",
+      messagingSenderId: "1048536840121",
+      appId: "1:1048536840121:web:0817ac28a529c1bbb3a868",
+      measurementId: "G-JBXX10NY6R"
+    };
+
+    // 3. 初始化 Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    // 4. 获取 Realtime Database 引用
+    const db = getDatabase(app);
+
+    // 5. 使用 HTML5 Geolocation 上报 GPS
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          // 将位置写入数据库（可改成任意设备 ID）
+          set(ref(db, 'location/your_device_id'), {
+            lat: lat,
+            lng: lng,
+            timestamp: Date.now()
+          });
+          console.log("位置已上报:", lat, lng);
+        },
+        (error) => {
+          console.error("获取位置失败：", error);
+        },
+        {
+          enableHighAccuracy: true,
+          maximumAge: 0,
+          timeout: 5000
+        }
+      );
+    } else {
+      alert("浏览器不支持地理定位");
+    }
+  </script>
+</body>
+</html>
